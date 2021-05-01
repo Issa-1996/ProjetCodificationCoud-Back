@@ -22,9 +22,7 @@ class Reservation
      */
     private $annee;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Lit::class, inversedBy="reservations")
-     */
+    //TEMPORARY DELETE
     private $lit;
 
     /**
@@ -32,6 +30,11 @@ class Reservation
      * @ORM\JoinColumn(nullable=false)
      */
     private $etudiant;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Affectation::class, mappedBy="reservation", cascade={"persist", "remove"})
+     */
+    private $affectation;
 
     public function getId(): ?int
     {
@@ -70,6 +73,23 @@ class Reservation
     public function setEtudiant(?Etudiant $etudiant): self
     {
         $this->etudiant = $etudiant;
+
+        return $this;
+    }
+
+    public function getAffectation(): ?Affectation
+    {
+        return $this->affectation;
+    }
+
+    public function setAffectation(Affectation $affectation): self
+    {
+        // set the owning side of the relation if necessary
+        if ($affectation->getReservation() !== $this) {
+            $affectation->setReservation($this);
+        }
+
+        $this->affectation = $affectation;
 
         return $this;
     }

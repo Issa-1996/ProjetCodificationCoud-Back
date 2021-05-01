@@ -36,14 +36,18 @@ class Lit
      */
     private $quota;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="lit")
-     */
+    //TEMPORARY DELETE
     private $reservations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Affectation::class, mappedBy="lit")
+     */
+    private $affectations;
 
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->affectations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,6 +115,36 @@ class Lit
             // set the owning side to null (unless already changed)
             if ($reservation->getLit() === $this) {
                 $reservation->setLit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Affectation[]
+     */
+    public function getAffectations(): Collection
+    {
+        return $this->affectations;
+    }
+
+    public function addAffectation(Affectation $affectation): self
+    {
+        if (!$this->affectations->contains($affectation)) {
+            $this->affectations[] = $affectation;
+            $affectation->setLit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAffectation(Affectation $affectation): self
+    {
+        if ($this->affectations->removeElement($affectation)) {
+            // set the owning side to null (unless already changed)
+            if ($affectation->getLit() === $this) {
+                $affectation->setLit(null);
             }
         }
 
