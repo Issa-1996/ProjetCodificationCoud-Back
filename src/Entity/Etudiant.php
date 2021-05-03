@@ -2,12 +2,31 @@
 
 namespace App\Entity;
 
-use App\Repository\EtudiantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * @ApiResource(
+ *      collectionOperations={
+ *          "post"={
+ *              "path"="/etudiant/inscription",
+ *          },
+ *          "get"={
+ *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security_message"="Permission denied.",
+ *              "path"="/etudiant/liste",
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
+ *          }
+ *      },
+ *      itemOperations={
+ *          "get"={
+ *              "defaults"={"id"=null}
+ *          }
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User
