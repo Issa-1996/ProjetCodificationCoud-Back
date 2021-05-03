@@ -2,12 +2,31 @@
 
 namespace App\Entity;
 
-use App\Repository\EtudiantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * @ApiResource(
+ *      collectionOperations={
+ *          "post"={
+ *              "path"="/etudiant/inscription",
+ *          },
+ *          "get"={
+ *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security_message"="Permission denied.",
+ *              "path"="/etudiant/liste",
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
+ *          }
+ *      },
+ *      itemOperations={
+ *          "get"={
+ *              "defaults"={"id"=null}
+ *          }
+ *      }
+ * )
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User
@@ -22,15 +41,15 @@ class Etudiant extends User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $cni;
+    private $numIdentite;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $datenaissance;
+    private $dateNaissance;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $sexe;
 
@@ -49,6 +68,11 @@ class Etudiant extends User
      */
     private $reservation;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $moyenne;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -61,24 +85,24 @@ class Etudiant extends User
 
     public function getCni(): ?string
     {
-        return $this->cni;
+        return $this->numIdentite;
     }
 
     public function setCni(string $cni): self
     {
-        $this->cni = $cni;
+        $this->numIdentite = $cni;
 
         return $this;
     }
 
     public function getDatenaissance(): ?\DateTimeInterface
     {
-        return $this->datenaissance;
+        return $this->dateNaissance;
     }
 
     public function setDatenaissance(\DateTimeInterface $datenaissance): self
     {
-        $this->datenaissance = $datenaissance;
+        $this->dateNaissance = $datenaissance;
 
         return $this;
     }
@@ -145,6 +169,18 @@ class Etudiant extends User
                 $reservation->setEtudiant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMoyenne(): ?float
+    {
+        return $this->moyenne;
+    }
+
+    public function setMoyenne(float $moyenne): self
+    {
+        $this->moyenne = $moyenne;
 
         return $this;
     }

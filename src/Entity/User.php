@@ -44,7 +44,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $prenom;
+    private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -129,12 +129,12 @@ class User implements UserInterface
 
     public function getPrenom(): ?string
     {
-        return $this->prenom;
+        return $this->prenoms;
     }
 
     public function setPrenom(string $prenom): self
     {
-        $this->prenom = $prenom;
+        $this->prenoms = $prenom;
 
         return $this;
     }
