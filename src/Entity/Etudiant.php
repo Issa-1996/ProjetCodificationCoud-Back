@@ -18,12 +18,22 @@ use Doctrine\Common\Collections\ArrayCollection;
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
+ *              "normalization_context"={"groups"={"all_students"},"enable_max_depth"=true},
+ *          },
+ *          "getusers"={
+ *              "method"="get",
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="Permission non autorisée.",
+ *              "path"="/etudiant/reservation",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
  *          }
  *      },
  *      itemOperations={
- *          "get"={
- *              "defaults"={"id"=null}
+ *         "get"={
+ *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security_message"="Permission non autorisée.",
+ *              "path"="/etudiant/{id}",
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
  *          }
  *      }
  * )

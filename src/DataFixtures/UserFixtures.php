@@ -11,14 +11,14 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $user1 = new User();
-        $user1->setUsername('utilisateur1');
+        $user1->setUsername('admin1');
         $user1->setPassword('password');
-        $user1->setRoles(['etudiant']);
+        $user1->setRoles(['ROLE_ETUDIANT']);
 
         $user2 = new User();
-        $user2->setUsername('utilisateur2');
+        $user2->setUsername('admin2');
         $user2->setPassword('password');
-        $user2->setRoles(['admin']);
+        $user2->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($user1);
         $manager->persist($user2);
