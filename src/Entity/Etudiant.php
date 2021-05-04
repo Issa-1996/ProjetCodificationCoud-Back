@@ -7,6 +7,7 @@ use App\Repository\EtudiantRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -14,11 +15,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  *          "post"={
  *              "path"="/etudiant/inscription",
  *          },
- *          "get"={
+ *          "getUser"={
+ *              "method"="get",
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
- *              "normalization_context"={"groups"={"all_students"},"enable_max_depth"=true},
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true},
  *          },
  *          "getusers"={
  *              "method"="get",
@@ -50,6 +52,7 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({"all_student"})
      */
     private $numIdentite;
 

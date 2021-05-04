@@ -19,6 +19,13 @@ class EtudiantDataPersister implements DataPersisterInterface
 {
 
 
+    private $serializer;
+    private $request;
+    private $niveau_repo;
+    private $dep_repo;
+    private $fac_repo;
+    private $em;
+
     public function __construct(EntityManagerInterface $em, RequestStack $request, SerializerInterface $serializer, NiveauRepository $niveau_repo, FaculteRepository $fac_repo, DepartementRepository $dep_repo)
     {
         $this->em = $em;
