@@ -47,4 +47,16 @@ class NiveauRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
+    public function findOneByNom($value): ?Niveau
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.nom = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
 }

@@ -25,7 +25,7 @@ class Niveau
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="niveaux")
+     * @ORM\ManyToOne(targetEntity=Departement::class, inversedBy="niveaux", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $departement;
@@ -35,9 +35,15 @@ class Niveau
      */
     private $quotaLits;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="niveau")
+     */
+    private $etudiants;
+
     public function __construct()
     {
         $this->quotaLits = new ArrayCollection();
+        $this->etudiants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,36 @@ class Niveau
             // set the owning side to null (unless already changed)
             if ($quotaLit->getNiveau() === $this) {
                 $quotaLit->setNiveau(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Etudiant[]
+     */
+    public function getEtudiants(): Collection
+    {
+        return $this->etudiants;
+    }
+
+    public function addEtudiant(Etudiant $etudiant): self
+    {
+        if (!$this->etudiants->contains($etudiant)) {
+            $this->etudiants[] = $etudiant;
+            $etudiant->setNiveau($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtudiant(Etudiant $etudiant): self
+    {
+        if ($this->etudiants->removeElement($etudiant)) {
+            // set the owning side to null (unless already changed)
+            if ($etudiant->getNiveau() === $this) {
+                $etudiant->setNiveau(null);
             }
         }
 

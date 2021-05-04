@@ -25,7 +25,7 @@ class Departement
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Faculte::class, inversedBy="departements")
+     * @ORM\ManyToOne(targetEntity=Faculte::class, inversedBy="departements", cascade={"persist"})
      */
     private $faculte;
 

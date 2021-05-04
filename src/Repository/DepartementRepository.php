@@ -47,4 +47,16 @@ class DepartementRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
+    public function findOneByNom($value): ?Departement
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.nom = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
 }
