@@ -45,7 +45,7 @@ class EtudiantDataPersister implements DataPersisterInterface
         $data->setUsername($tab[0]['numero']);
         $data->setPassword($tab[1]['password']);
         $data->setEmail($tab[1]['email']);
-        $data->setRoles("ROLE_ETUDIANT");
+        $data->setRoles(["ROLE_ETUDIANT"]);
 
         if (!$niveau = $this->niveau_repo->findOneByNom($tab[0]['niveauFormation'])) {
             $niveau = new Niveau();
