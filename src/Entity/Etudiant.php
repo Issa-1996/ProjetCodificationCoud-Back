@@ -41,15 +41,15 @@ class Etudiant extends User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $cni;
+    private $numIdentite;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
-    private $datenaissance;
+    private $dateNaissance;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $sexe;
 
@@ -68,6 +68,11 @@ class Etudiant extends User
      */
     private $reservation;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $moyenne;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -78,26 +83,26 @@ class Etudiant extends User
         return $this->id;
     }
 
-    public function getCni(): ?string
+    public function getNumIdentite(): ?string
     {
-        return $this->cni;
+        return $this->numIdentite;
     }
 
-    public function setCni(string $cni): self
+    public function setNumIdentite(string $cni): self
     {
-        $this->cni = $cni;
+        $this->numIdentite = $cni;
 
         return $this;
     }
 
-    public function getDatenaissance(): ?\DateTimeInterface
+    public function getDateNaissance(): ?string
     {
-        return $this->datenaissance;
+        return $this->dateNaissance;
     }
 
-    public function setDatenaissance(\DateTimeInterface $datenaissance): self
+    public function setDateNaissance(string $datenaissance): self
     {
-        $this->datenaissance = $datenaissance;
+        $this->dateNaissance = $datenaissance;
 
         return $this;
     }
@@ -164,6 +169,18 @@ class Etudiant extends User
                 $reservation->setEtudiant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMoyenne(): ?string
+    {
+        return $this->moyenne;
+    }
+
+    public function setMoyenneSession(string $moyenne): self
+    {
+        $this->moyenne = $moyenne;
 
         return $this;
     }
