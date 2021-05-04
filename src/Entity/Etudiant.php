@@ -4,11 +4,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EtudiantRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * @UniqueEntity({"username","email", "numero"})
  * @ApiResource(
  *      collectionOperations={
  *          "post"={
@@ -27,6 +31,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *          }
  *      }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User

@@ -2,10 +2,33 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReservationRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * * @ApiResource(
+ *      collectionOperations={
+ *          "post"={
+ *               "security"="is_granted('ROLE_eTUDIANT')",
+ *               "security_message"="Permission denied.",
+ *               "path"="/etudiant/reserver",
+ *           },
+ *          "get"={
+ *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security_message"="Permission denied.",
+ *              "path"="etudiant/reservation",
+ *          }
+ *      },
+ *      itemOperations={
+ *          "get"={
+ *              "defaults"={"id"=null}
+ *          }
+ *      }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "etudiant.id":"exact"})
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
 class Reservation
@@ -15,7 +38,7 @@ class Reservation
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="date")
