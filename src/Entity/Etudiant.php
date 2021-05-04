@@ -73,6 +73,12 @@ class Etudiant extends User
      */
     private $moyenne;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="etudiants", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $niveau;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -181,6 +187,18 @@ class Etudiant extends User
     public function setMoyenneSession(string $moyenne): self
     {
         $this->moyenne = $moyenne;
+
+        return $this;
+    }
+
+    public function getNiveau(): ?Niveau
+    {
+        return $this->niveau;
+    }
+
+    public function setNiveau(?Niveau $niveau): self
+    {
+        $this->niveau = $niveau;
 
         return $this;
     }

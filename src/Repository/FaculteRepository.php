@@ -47,4 +47,16 @@ class FaculteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
+    public function findOneByNom($value): ?Faculte
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.nom = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    
 }
