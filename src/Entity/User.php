@@ -5,9 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping\InheritanceType;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,11 +26,13 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"all_student"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     * @Groups ({"all_student"})
      */
     private $username;
 
@@ -43,11 +49,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups ({"all_student"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups ({"all_student"})
      */
     private $nom;
 

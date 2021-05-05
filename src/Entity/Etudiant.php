@@ -10,10 +10,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @UniqueEntity({"username","email", "numero"})
+ * @UniqueEntity({"username","email"})
  * @ApiResource(
+ *      attributes={
+ *          "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true},
+ *      },
  *      collectionOperations={
  *          "post"={
  *              "path"="/etudiant/inscription",
@@ -22,16 +26,32 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
+ *              
+ *          },
+ *          "getusers"={
+ *              "method"="get",
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="Permission non autorisée.",
+ *              "path"="/etudiant/reservation",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
  *          }
  *      },
  *      itemOperations={
- *          "get"={
- *              "defaults"={"id"=null}
+ *         "get"={
+ *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security_message"="Permission non autorisée.",
+ *              "path"="/etudiant/{id}",
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
+ *          },
+ *          "put"={
+ *              "security"="is_granted('ROLE_ETUDIANT')", 
+ *              "security_message"="Permission denied.",
+ *              "path"="/etudiant/{id}/reserver",
+ *              "requirements"={"id"="\d+"},
  *          }
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact", "username":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User
@@ -45,6 +65,7 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({"all_student"})
      */
     private $numIdentite;
 
@@ -69,18 +90,21 @@ class Etudiant extends User
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant")
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant", cascade={"persist"})
+     * @Groups ({"all_student"})
      */
     private $reservation;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups ({"all_student"})
      */
     private $moyenne;
 
     /**
      * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups ({"all_student"})
      */
     private $niveau;
 
@@ -89,10 +113,10 @@ class Etudiant extends User
         $this->reservation = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    // public function getId(): ?int
+    // {
+    //     return $this->id;
+    // }
 
     public function getNumIdentite(): ?string
     {

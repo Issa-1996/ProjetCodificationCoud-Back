@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\DepartementRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DepartementRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DepartementRepository::class)
@@ -21,11 +22,13 @@ class Departement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({"all_student"})
      */
     private $nom;
 
     /**
      * @ORM\ManyToOne(targetEntity=Faculte::class, inversedBy="departements", cascade={"persist"})
+     * @Groups ({"all_student"})
      */
     private $faculte;
 
