@@ -32,7 +32,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "method"="get",
  *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Permission non autorisée.",
- *              "path"="/etudiant/reservation",
+ *              "path"="/etudiant/reservations",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
  *          }
  *      },
@@ -42,12 +42,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "security_message"="Permission non autorisée.",
  *              "path"="/etudiant/{id}",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
- *          },
- *          "put"={
- *              "security"="is_granted('ROLE_ETUDIANT')", 
- *              "security_message"="Permission denied.",
- *              "path"="/etudiant/{id}/reserver",
- *              "requirements"={"id"="\d+"},
  *          }
  *      }
  * )
@@ -113,10 +107,10 @@ class Etudiant extends User
         $this->reservation = new ArrayCollection();
     }
 
-    // public function getId(): ?int
-    // {
-    //     return $this->id;
-    // }
+    public function getId(): ?int
+    {
+        return parent::getId();
+    }
 
     public function getNumIdentite(): ?string
     {

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReservationRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -11,16 +12,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * * @ApiResource(
+ *      attributes={
+ *          "denormalization_context"={"groups"={"reservation_create"},"enable_max_depth"=true},
+ *      },
  *      collectionOperations={
  *          "post"={
- *               "security"="is_granted('ROLE_eTUDIANT')",
+ *               "security"="is_granted('ROLE_ETUDIANT')",
  *               "security_message"="Permission denied.",
  *               "path"="/etudiant/reserver",
  *           },
  *          "get"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
- *              "path"="etudiant/reservation",
+ *              "path"="api/etudiant/reservations",
  *          }
  *      },
  *      itemOperations={
@@ -54,6 +58,7 @@ class Reservation
     /**
      * @ORM\ManyToOne(targetEntity=Etudiant::class, inversedBy="reservation")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"reservation_create"})
      */
     private $etudiant;
 
@@ -61,6 +66,10 @@ class Reservation
      * @ORM\OneToOne(targetEntity=Affectation::class, mappedBy="reservation", cascade={"persist", "remove"})
      */
     private $affectation;
+
+    public function __construct(){
+        $this->annee = new DateTime;
+    }
 
     public function getId(): ?int
     {

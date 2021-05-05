@@ -17,6 +17,7 @@ class Niveau
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"all_student"})
      */
     private $id;
 
