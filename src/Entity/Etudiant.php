@@ -4,30 +4,36 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EtudiantRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @UniqueEntity({"username","email"})
  * @ApiResource(
+ *      attributes={
+ *          "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true},
+ *      },
  *      collectionOperations={
  *          "post"={
  *              "path"="/etudiant/inscription",
  *          },
- *          "getUser"={
- *              "method"="get",
+ *          "get"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
- *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true},
+ *              
  *          },
  *          "getusers"={
  *              "method"="get",
  *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Permission non autorisée.",
- *              "path"="/etudiant/reservation",
+ *              "path"="/etudiant/reservations",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
  *          }
  *      },
@@ -40,6 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *      }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact", "username":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User
@@ -84,6 +91,8 @@ class Etudiant extends User
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant")
      * @Assert\NotBlank( message="la reservation est obligatoire" )
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant", cascade={"persist"})
+     * @Groups ({"all_student"})
      */
     private $reservation;
 
@@ -106,10 +115,11 @@ class Etudiant extends User
         $this->reservation = new ArrayCollection();
     }
 
-  /*  public function getId(): ?int
+    public function getId(): ?int
     {
-        return $this->id;
-    }*/
+        //return $this->id;
+        return parent::getId();
+    }
 
     public function getNumIdentite(): ?string
     {

@@ -30,7 +30,7 @@ class Chambre
     private $nombrelit;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Pavillon::class, inversedBy="chambres")
+     * @ORM\ManyToOne(targetEntity=Pavillon::class, inversedBy="chambres", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $pavillon;
