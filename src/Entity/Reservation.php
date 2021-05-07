@@ -63,6 +63,7 @@ class Reservation
     private $etudiant;
 
     /**
+     * @Groups ({"all_student"})
      * @ORM\OneToOne(targetEntity=Affectation::class, mappedBy="reservation", cascade={"persist", "remove"})
      */
     private $affectation;

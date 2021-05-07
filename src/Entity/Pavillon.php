@@ -25,7 +25,7 @@ class Pavillon
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="pavillons")
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="pavillons", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;

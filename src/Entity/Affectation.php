@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\AffectationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AffectationRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AffectationRepository::class)
@@ -19,6 +20,7 @@ class Affectation
 
     /**
      * @ORM\ManyToOne(targetEntity=Lit::class, inversedBy="affectations")
+     * @Groups ({"all_student"})
      */
     private $lit;
 
