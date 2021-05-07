@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -52,22 +53,26 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"all_student"})
+     * @Assert\NotBlank( message="le numéro d'entité est obligatoire" )
+     *
      */
     private $numIdentite;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank( message="le date de naisssance est obligatoire" )
      */
     private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank( message="le sexe est obligatoire" )
      */
     private $sexe;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank( message="l'email est obligatoire" )
      */
     private $email;
 
@@ -78,17 +83,21 @@ class Etudiant extends User
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant")
+     * @Assert\NotBlank( message="la reservation est obligatoire" )
      */
     private $reservation;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups ({"all_student"})
+     * @Assert\NotBlank( message="le moyenne est obligatoire" )
      */
     private $moyenne;
 
     /**
      * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups ({"all_student"})
      */
     private $niveau;
 
@@ -97,10 +106,10 @@ class Etudiant extends User
         $this->reservation = new ArrayCollection();
     }
 
-    public function getId(): ?int
+  /*  public function getId(): ?int
     {
         return $this->id;
-    }
+    }*/
 
     public function getNumIdentite(): ?string
     {

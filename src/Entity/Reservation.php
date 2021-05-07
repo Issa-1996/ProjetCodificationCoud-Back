@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
@@ -19,6 +20,7 @@ class Reservation
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank( message="l'année est obligatoire" )
      */
     private $annee;
 
@@ -27,12 +29,14 @@ class Reservation
 
     /**
      * @ORM\ManyToOne(targetEntity=Etudiant::class, inversedBy="reservation")
+     * @Assert\NotBlank( message="l'étudiant est obligatoire" )
      * @ORM\JoinColumn(nullable=false)
      */
     private $etudiant;
 
     /**
      * @ORM\OneToOne(targetEntity=Affectation::class, mappedBy="reservation", cascade={"persist", "remove"})
+     * @Assert\NotBlank( message="l'affectation est obligatoire" )
      */
     private $affectation;
 

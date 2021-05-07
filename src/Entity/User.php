@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -27,27 +29,35 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     * @Assert\NotBlank( message="le Username est obligatoire" )
+     * @Groups ({"all_student"})
      */
     private $username;
 
      /**
      * @ORM\Column(type="json")
+      * @Assert\NotBlank( message="le role est obligatoire" )
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank( message="le pasord est obligatoire" )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank( message="le prénom est obligatoire" )
+     * @Groups ({"all_student"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank( message="le nom est obligatoire" )
+     * @Groups ({"all_student"})
      */
     private $nom;
 
