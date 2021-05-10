@@ -60,20 +60,17 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank( message="le numéro d'entité est obligatoire" )
      *
      */
     private $numIdentite;
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank( message="le date de naisssance est obligatoire" )
      */
     private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank( message="le sexe est obligatoire" )
      */
     private $sexe;
 
@@ -98,7 +95,6 @@ class Etudiant extends User
     /**
      * @ORM\Column(type="string")
      * @Groups ({"all_student"})
-     * @Assert\NotBlank( message="le moyenne est obligatoire" )
      */
     private $moyenne;
 
