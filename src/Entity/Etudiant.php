@@ -79,7 +79,6 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank( message="l'email est obligatoire" )
      */
     private $email;
 
