@@ -33,40 +33,29 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     * @Assert\NotBlank( message="le Username est obligatoire" )
      * @Groups ({"all_student"})
      */
     private $username;
 
      /**
      * @ORM\Column(type="json")
-      * @Assert\NotBlank( message="le role est obligatoire" )
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank( message="le pasord est obligatoire" )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-<<<<<<< HEAD
-     * @Assert\NotBlank( message="le prénom est obligatoire" )
-=======
->>>>>>> b9e071d53ee62648cdaecbdd8445f893a56a4405
      * @Groups ({"all_student"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-<<<<<<< HEAD
-     * @Assert\NotBlank( message="le nom est obligatoire" )
-=======
->>>>>>> b9e071d53ee62648cdaecbdd8445f893a56a4405
      * @Groups ({"all_student"})
      */
     private $nom;
