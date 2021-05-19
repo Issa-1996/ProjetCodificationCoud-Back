@@ -33,7 +33,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     * @Assert\NotBlank(message="le numéro de carte est obligatoire")
      * @Groups ({"all_student"})
      */
     private $username;
