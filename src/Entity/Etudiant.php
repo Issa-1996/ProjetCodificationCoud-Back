@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact", "username":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact", "username":"exact","reservation.affectation":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User
@@ -60,12 +60,12 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
      */
     private $numIdentite;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups ({"all_student"})
      */
     private $dateNaissance;
 
@@ -86,7 +86,6 @@ class Etudiant extends User
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant")
-     * @Assert\NotBlank( message="la reservation est obligatoire" )
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant", cascade={"persist"})
      * @Groups ({"all_student"})
      */

@@ -68,7 +68,6 @@ class Reservation
     /**
      * @Groups ({"all_student"})
      * @ORM\OneToOne(targetEntity=Affectation::class, mappedBy="reservation", cascade={"persist", "remove"})
-     * @Assert\NotBlank( message="l'affectation est obligatoire" )
      */
     private $affectation;
 
