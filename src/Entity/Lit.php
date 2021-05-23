@@ -38,9 +38,6 @@ class Lit
      */
     private $quota;
 
-    //TEMPORARY DELETE
-    private $reservations;
-
     /**
      * @ORM\OneToMany(targetEntity=Affectation::class, mappedBy="lit")
      */
@@ -89,36 +86,6 @@ class Lit
     public function setQuota(?QuotaLit $quota): self
     {
         $this->quota = $quota;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Reservation[]
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservation $reservation): self
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations[] = $reservation;
-            $reservation->setLit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): self
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getLit() === $this) {
-                $reservation->setLit(null);
-            }
-        }
 
         return $this;
     }

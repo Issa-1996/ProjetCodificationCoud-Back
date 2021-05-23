@@ -23,9 +23,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *               "path"="/etudiant/reserver",
  *           },
  *          "get"={
- *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Permission denied.",
  *              "path"="api/etudiant/reservations",
+ *              "normalization_context"={"groups"={"reservation_read"},"enable_max_depth"=true},
  *          }
  *      },
  *      itemOperations={
@@ -54,14 +55,11 @@ class Reservation
      */
     private $annee;
 
-    //TEMPORARY DELETE
-    private $lit;
-
     /**
      * @ORM\ManyToOne(targetEntity=Etudiant::class, inversedBy="reservation")
      * @Assert\NotBlank( message="l'étudiant est obligatoire" )
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"reservation_create"})
+     * @Groups({"reservation_create", "reservation_read"})
      */
     private $etudiant;
 
@@ -89,18 +87,6 @@ class Reservation
     public function setAnnee(\DateTimeInterface $annee): self
     {
         $this->annee = $annee;
-
-        return $this;
-    }
-
-    public function getLit(): ?Lit
-    {
-        return $this->lit;
-    }
-
-    public function setLit(?Lit $lit): self
-    {
-        $this->lit = $lit;
 
         return $this;
     }

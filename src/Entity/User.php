@@ -33,8 +33,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     * @Assert\NotBlank(message="le numéro de carte est obligatoire")
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_read"})
      */
     private $username;
 
@@ -51,13 +50,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_read"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_read"})
      */
     private $nom;
 
