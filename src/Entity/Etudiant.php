@@ -45,7 +45,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          }
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact", "username":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "niveau.nom":"exact", "username":"exact","reservation.affectation":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantRepository::class)
  */
 class Etudiant extends User
