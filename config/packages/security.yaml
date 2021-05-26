@@ -52,4 +52,4 @@ security:
         - { path: ^/api$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/api,       roles:[IS_AUTHENTICATED_FULLY ] }
     role_hierarchy:
-        ROLE_SYSTEMADMIN: [ROLE_ETUDIANT]
+        ROLE_ADMIN: [ROLE_ETUDIANT]
