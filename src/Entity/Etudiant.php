@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueEntity({"username","email"})
@@ -28,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
  *          },
- *          "getusers"={
+ *          "reservations"={
  *              "method"="get",
  *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Permission non autorisée.",
@@ -54,11 +53,13 @@ class Etudiant extends User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"reservation_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({"all_student"})
      */
     private $numIdentite;
 
@@ -84,7 +85,6 @@ class Etudiant extends User
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant")
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="etudiant", cascade={"persist"})
      * @Groups ({"all_student"})
      */
@@ -92,14 +92,14 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string")
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_read"})
      */
     private $moyenne;
 
     /**
      * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="etudiants", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_read"})
      */
     private $niveau;
 
@@ -110,7 +110,6 @@ class Etudiant extends User
 
     public function getId(): ?int
     {
-        //return $this->id;
         return parent::getId();
     }
 
