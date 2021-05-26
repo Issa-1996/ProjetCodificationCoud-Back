@@ -104,6 +104,11 @@ class Etudiant extends User
      */
     private $niveau;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lieuNaissance;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -224,6 +229,18 @@ class Etudiant extends User
     public function setNiveau(?Niveau $niveau): self
     {
         $this->niveau = $niveau;
+
+        return $this;
+    }
+
+    public function getLieuNaissance(): ?string
+    {
+        return $this->lieuNaissance;
+    }
+
+    public function setLieuNaissance(?string $lieuNaissance): self
+    {
+        $this->lieuNaissance = $lieuNaissance;
 
         return $this;
     }

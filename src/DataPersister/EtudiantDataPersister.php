@@ -61,31 +61,45 @@ class EtudiantDataPersister implements DataPersisterInterface
         if (!$etu = $this->etu_api_repo->findOneByNumero($tab['numEtudiant'])) {
             return new Response('Etudiant(e) non reconnu(e).', Response::HTTP_FORBIDDEN);
         }
+
         if ($this->user_repo->findOneByUsername($tab['numEtudiant'])) {
             return new Response('Déja inscrit, connectez-vous !!!', Response::HTTP_FORBIDDEN);
         }
+
+        $dateNaissance = implode('/',array_reverse(explode('-',$tab['dateNaissance'])));
+
+        // Vérifier la compatibilité des dates de naissance et numéro d'indentité national. A décommenter
+        // if ($tab['numIdentite'] != $etu->getNumIdentite() || $dateNaissance != $etu->getDateNaissance()) {
+        //     return new Response('Les infos ne correspondent pas.', Response::HTTP_FORBIDDEN);
+        // }
+
         $data = $this->serializer->denormalize($tab,"\App\Entity\Etudiant");
         $data->setUsername($tab['numEtudiant']);
         $data->setRoles(["ROLE_ETUDIANT"]);
-        $data->setDateNaissance(implode('/',array_reverse(explode('-',$tab['dateNaissance']))));
+        $data->setDateNaissance($dateNaissance);
 
-        if (!$niveau = $this->niveau_repo->findOneByNom($tab['niveauFormation'])) {
+        if (!$niveau = $this->niveau_repo->findOneByNom($etu->getNiveauFormation())) {
             $niveau = new Niveau();
         }
-        $niveau->setNom($tab['niveauFormation']);
+        $niveau->setNom($etu->getNiveauFormation());
         $data->setNiveau($niveau);
 
-        if (!$departement = $this->dep_repo->findOneByNom($tab['departement'])) {
+        if (!$departement = $this->dep_repo->findOneByNom($etu->getDepartement())) {
             $departement = new Departement();
         }
-        $departement->setNom($tab['departement']);
+        $departement->setNom($etu->getDepartement());
         $niveau->setDepartement($departement);
 
-        if (!$faculte = $this->fac_repo->findOneByNom($tab['etablissement'])) {
+        if (!$faculte = $this->fac_repo->findOneByNom($etu->getEtablissement())) {
             $faculte = new Faculte();
         }
-        $faculte->setNom($tab['etablissement']);
+        $faculte->setNom($etu->getEtablissement());
         $departement->setFaculte($faculte);
+
+        $data->setMoyenneSession(strval($etu->getMoyenne()));
+        $data->setPrenoms($etu->getPrenoms());
+        $data->setNom($etu->getNom());
+        $data->setLieuNaissance($etu->getLieuNaissance());
 
         $this->em->persist($data);
         $this->em->flush();
