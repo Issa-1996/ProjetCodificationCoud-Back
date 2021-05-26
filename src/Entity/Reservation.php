@@ -25,7 +25,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "get"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
- *              "path"="api/etudiant/reservations",
+ *              "path"="api/reservation/etudiant",
  *          }
  *      },
  *      itemOperations={
