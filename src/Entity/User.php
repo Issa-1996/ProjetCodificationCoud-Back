@@ -10,9 +10,10 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,6 +21,35 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "etudiant" = "Etudiant"})
+ * @UniqueEntity("username")
+ * @ApiFilter(SearchFilter::class, properties={"roles":"partial"})
+ * @ApiResource(
+ *      collectionOperations={
+ *          "post"={
+ *              "path"="/admin/inscription",
+ *          },
+ *          "get"={
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="Accéss limité.",
+ *              "path"="/admin/liste",
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}               
+ *          },
+ *      },
+ *      itemOperations={
+ *         "get"={
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="Accéss limité.",
+ *              "path"="/admin/{id}",
+ *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
+ *          },
+ *          "put"={
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="Accéss limité.",
+ *              "path"="/admin/archivage/{id}",
+ *              "normalization_context"={"groups"={"archiver"},"enable_max_depth"=true}
+ *          }
+ *      }
+ * )
  */
 class User implements UserInterface
 {
@@ -39,6 +69,7 @@ class User implements UserInterface
 
      /**
      * @ORM\Column(type="json")
+     * @Groups ({"all_student"})
      */
     private $roles = [];
 
@@ -59,6 +90,13 @@ class User implements UserInterface
      * @Groups ({"all_student", "reservation_read"})
      */
     private $nom;
+
+    /**
+     * @ORM\Column(type="boolean", length=255, nullable=true)
+     * @Groups ({"archiver"})
+     * @Groups ({"all_student"})
+     */
+    private $archivage;
 
     public function getId(): ?int
     {
@@ -156,6 +194,18 @@ class User implements UserInterface
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getArchivage(): ?bool
+    {
+        return $this->archivage;
+    }
+
+    public function setArchivage(?bool $archivage): self
+    {
+        $this->archivage = $archivage;
 
         return $this;
     }
