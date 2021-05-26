@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
- *              
  *          },
  *          "getusers"={
  *              "method"="get",
