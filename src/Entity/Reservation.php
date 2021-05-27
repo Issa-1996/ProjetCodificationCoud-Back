@@ -25,7 +25,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "get"={
  *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Permission denied.",
- *              "path"="api/etudiant/reservations",
+ *              "path"="api/reservation/etudiant",
  *              "normalization_context"={"groups"={"reservation_read"},"enable_max_depth"=true},
  *          }
  *      },

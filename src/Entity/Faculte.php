@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FaculteRepository;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *      attributes={
+ *          "normalization_context"={"groups"={"faculte"},"enable_max_depth"=true},
+ *      },
+ *      collectionOperations={"post",
+ *
+ *         "get_faculte"={
+ *                 "method" ="GET",
+ *                 "path"="/faculte",
+ *                 "security"="is_granted('ROLE_ADMIN')",
+ *                 "security_message"="Vous n'avez pas d'access",
+ *                 "normalization_context"={"groups"={"faculte"},"enable_max_depth"=true},
+ *              },
+ *    },
+ *      itemOperations={"put","delete","get"}
+ *     )
  * @ORM\Entity(repositoryClass=FaculteRepository::class)
  */
 class Faculte
@@ -23,7 +41,7 @@ class Faculte
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student","faculte"})
      */
     private $nom;
 
