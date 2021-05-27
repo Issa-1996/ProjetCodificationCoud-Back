@@ -105,6 +105,7 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups ({"all_student"})
      */
     private $lieuNaissance;
 

@@ -27,6 +27,7 @@ class EtudiantDataPersister implements DataPersisterInterface
     private $dep_repo;
     private $fac_repo;
     private $em;
+    private $etu_api_repo;
 
     public function __construct(EntityManagerInterface $em,
                                 RequestStack $request,

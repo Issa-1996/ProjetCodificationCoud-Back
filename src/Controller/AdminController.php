@@ -14,8 +14,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
 {
-    public function  __construct(EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, 
-    SerializerInterface $serializer)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    public function  __construct(EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder,
+                                 SerializerInterface $serializer)
     {
         $this->manager = $manager;
         $this->encoder = $encoder;
@@ -29,7 +38,9 @@ class AdminController extends AbstractController
      *      methods="POST",
      * )
      */
-    public function addUser(UserPasswordEncoderInterface $encoder,Request $request,SerializerInterface $serializer, \Swift_Mailer $mailer)
+    public function addUser(UserPasswordEncoderInterface $encoder,
+                            Request $request,
+                            SerializerInterface $serializer, \Swift_Mailer $mailer)
     {
         
         $tab = $this->serializer->decode($request->getContent(), "json");
@@ -43,7 +54,7 @@ class AdminController extends AbstractController
         $password="password";                                                                                                                               
        // dd($email);
        $message = (new \Swift_Message('Coordonnées de connexion '))
-                ->setFrom('issa.sarr@uadb.edu.sn')
+                ->setFrom('yayefalldev@gmail.com')
                 ->setTo($email)
                 ->setBody("Bienvenue ".$tab["prenom"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veiller l'utiliser pour vous connecter a l'espace administrateur.");
                 //dd($message);
