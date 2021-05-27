@@ -24,6 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("username")
  * @ApiFilter(SearchFilter::class, properties={"roles":"partial"})
  * @ApiResource(
+ *      attributes={"pagination_items_per_page"=3},
  *      collectionOperations={
  *          "post"={
  *              "path"="/admin/inscription",
