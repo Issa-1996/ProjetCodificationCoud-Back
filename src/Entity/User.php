@@ -22,9 +22,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "etudiant" = "Etudiant"})
  * @UniqueEntity("username")
- * @ApiFilter(SearchFilter::class, properties={"roles":"partial"})
+ * @ApiFilter(SearchFilter::class, properties={"roles":"partial"}, properties={"username":"partial"})
  * @ApiResource(
- *      attributes={"pagination_items_per_page"=3},
+ *      attributes={"pagination_items_per_page"=5},
  *      collectionOperations={
  *          "post"={
  *              "path"="/admin/inscription",
@@ -59,12 +59,14 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups ({"all_student"})
+     * @Groups ({"archiver"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"archiver"})
      */
     private $username;
 
@@ -77,18 +79,21 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string", nullable=false)
+     * @Groups ({"archiver"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"archiver"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"archiver"})
      */
     private $nom;
 
