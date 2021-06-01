@@ -22,6 +22,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "post"={
  *              "path"="/etudiant/inscription",
  *          },
+ *         "list_reservation"={
+ *               "method"="get",
+ *                "path"="/admin/etudiant/listReservation",
+ *                "security"="is_granted('ROLE_ADMIN')",
+ *                "security_message"="Permission denied.",
+ *                "normalization_context"={"groups"={"all_etudiant"},"enable_max_depth"=true}
+ *
+ *          },
  *          "get"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
@@ -92,7 +100,7 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string")
-     * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
      */
     private $moyenne;
 

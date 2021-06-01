@@ -23,7 +23,8 @@ class AdminController extends AbstractController
      */
     private $serializer;
 
-    public function  __construct(EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder,
+    public function  __construct(EntityManagerInterface $manager,
+                                 UserPasswordEncoderInterface $encoder,
                                  SerializerInterface $serializer)
     {
         $this->manager = $manager;
@@ -56,7 +57,7 @@ class AdminController extends AbstractController
        $message = (new \Swift_Message('Coordonnées de connexion '))
                 ->setFrom('yayefalldev@gmail.com')
                 ->setTo($email)
-                ->setBody("Bienvenue ".$tab["prenom"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veiller l'utiliser pour vous connecter a l'espace administrateur.");
+                ->setBody("Bienvenue ".$tab["prenom"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veuiller l'utiliser pour vous connecter à l'espace administrateur.");
                 //dd($message);
             $mailer->send($message);
             //return $this->render('base.html.twig');

@@ -29,6 +29,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          "post"={
  *              "path"="/admin/inscription",
  *          },
+ *            "import_list"={
+ *               "method"="POST",
+ *               "path"="/admin/importList",
+ *             },
  *          "get"={
  *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Accéss limité.",
@@ -64,7 +68,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
      */
     private $username;
 
@@ -82,13 +86,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
      */
     private $nom;
 
