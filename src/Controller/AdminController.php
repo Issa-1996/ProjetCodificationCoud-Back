@@ -46,7 +46,7 @@ class AdminController extends AbstractController
         
         $tab = $this->serializer->decode($request->getContent(), "json");
         $user=new User();
-        $user->setPrenoms($tab["prenom"]);
+        $user->setPrenoms($tab["prenoms"]);
         $user->setNom($tab["nom"]);
         $user->setRoles(["ROLE_ADMIN"]);
         $user->setUsername($tab["username"]);
@@ -57,6 +57,7 @@ class AdminController extends AbstractController
        $message = (new \Swift_Message('Coordonnées de connexion '))
                 ->setFrom('yayefalldev@gmail.com')
                 ->setTo($email)
+
                 ->setBody("Bienvenue ".$tab["prenom"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veuiller l'utiliser pour vous connecter à l'espace administrateur.");
                 //dd($message);
             $mailer->send($message);
