@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      attributes={
  *          "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true},
  *          "pagination_items_per_page"=5,
+ *          "pagination_client_enabled"=true
  *      },
  *      collectionOperations={
  *          "post"={
