@@ -54,7 +54,7 @@ class AdminController extends AbstractController
         $email=$tab["username"];
         $password="password";                                                                                                                               
        // dd($email);
-       $message = (new \Swift_Message('Coordonnées de connexion '))
+        $message = (new \Swift_Message('Coordonnées de connexion '))
                 ->setFrom('yayefalldev@gmail.com')
                 ->setTo($email)
 
