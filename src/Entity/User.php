@@ -30,7 +30,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "path"="/admin/inscription",
  *          },
  *          "get"={
- *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Accéss limité.",
  *              "path"="/admin/liste",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}               
