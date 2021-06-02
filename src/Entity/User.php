@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "etudiant" = "Etudiant"})
  * @UniqueEntity("username")
- * @ApiFilter(SearchFilter::class, properties={"roles":"partial"}, properties={"username":"partial"})
+ * @ApiFilter(SearchFilter::class, properties={"roles":"partial", "username":"exact"})
  * @ApiResource(
  *      attributes={"pagination_items_per_page"=5},
  *      collectionOperations={
