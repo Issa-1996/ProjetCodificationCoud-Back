@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "etudiant" = "Etudiant"})
  * @UniqueEntity("username")
- * @ApiFilter(SearchFilter::class, properties={"roles":"partial"}, properties={"username":"partial"})
+ * @ApiFilter(SearchFilter::class, properties={"roles":"partial", "username":"exact"})
  * @ApiResource(
  *      attributes={"pagination_items_per_page"=5},
  *      collectionOperations={
@@ -34,7 +34,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *               "path"="/admin/importList",
  *             },
  *          "get"={
- *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Accéss limité.",
  *              "path"="/admin/liste",
  *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}               
