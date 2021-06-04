@@ -47,4 +47,14 @@ class LitRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneByNumero($value): ?Lit
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.numero = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

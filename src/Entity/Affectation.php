@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AffectationRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -34,6 +35,10 @@ class Affectation
      * @ORM\JoinColumn(nullable=false)
      */
     private $reservation;
+
+    public function __construct(){
+        $this->annee = new DateTime;
+    }
 
     public function getId(): ?int
     {
