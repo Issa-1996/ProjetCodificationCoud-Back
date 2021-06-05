@@ -18,11 +18,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      attributes={
  *          "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true},
  *          "pagination_items_per_page"=5,
- *          "pagination_client_enabled"=true
+ *          "pagination_client_enabled"=true,
+ *          "pagination_client_items_per_page"=true
  *      },
  *      collectionOperations={
  *          "post"={
  *              "path"="/etudiant/inscription",
+ *          },
+ *         "list_reservation"={
+ *               "method"="get",
+ *                "path"="/admin/etudiant/listReservation",
+ *                "security"="is_granted('ROLE_ADMIN')",
+ *                "security_message"="Permission denied.",
+ *                "normalization_context"={"groups"={"all_etudiant"},"enable_max_depth"=true}
+ *
  *          },
  *          "get"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
@@ -94,7 +103,7 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string")
-     * @Groups ({"all_student", "reservation_read"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
      */
     private $moyenne;
 

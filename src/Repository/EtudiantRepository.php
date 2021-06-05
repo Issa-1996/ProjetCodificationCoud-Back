@@ -47,4 +47,14 @@ class EtudiantRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneByNumero($value): ?Etudiant
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.username = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }
