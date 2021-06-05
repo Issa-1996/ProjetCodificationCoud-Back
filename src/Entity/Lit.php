@@ -4,11 +4,31 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LitRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *      attributes={
+ *          "normalization_context"={"groups"={"lit"},"enable_max_depth"=true},
+ *      },
+ *      collectionOperations={"post",
+ *
+ *         "get_faculte"={
+ *                 "method" ="GET",
+ *                 "path"="/lit",
+ *                 "security"="is_granted('ROLE_ADMIN')",
+ *                 "security_message"="Vous n'avez pas d'access",
+ *                 "normalization_context"={"groups"={"lit"},"enable_max_depth"=true},
+ *              },
+ *    },
+ *      itemOperations={"put","delete","get"}
+ *     )
+ * @ApiFilter(SearchFilter::class, properties={"id":"exact", "chambre.nom":"exact"})
  * @ORM\Entity(repositoryClass=LitRepository::class)
  */
 class Lit
@@ -23,12 +43,14 @@ class Lit
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ({"all_student"})
+     * @Groups ({"lit"})
      */
     private $numero;
 
     /**
      * @ORM\ManyToOne(targetEntity=Chambre::class, inversedBy="lits", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups ({"lit"})
      */
     private $chambre;
 
