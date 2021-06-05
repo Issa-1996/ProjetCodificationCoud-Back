@@ -24,14 +24,11 @@ class EtudiantController extends AbstractController
 
     // importation fichier Excel
     public function import(Request $request){
-        $doc = $request ->files->get('excelFile');
-           		$file= IOFactory::identify($doc);
-           		$reader= IOFactory::createReader($file);
-           		$spreadsheet=$reader->load($doc);
-           		$excel_file= $spreadsheet->getActivesheet()->toArray();
-      	   // dd($excel_file);
-        return new JsonResponse($excel_file, Response::HTTP_OK);
-
-          }
-
+      $doc = $request ->files->get('excelFile');
+      $file= IOFactory::identify($doc);
+      $reader= IOFactory::createReader($file);
+      $spreadsheet=$reader->load($doc);
+      $excel_file= $spreadsheet->getActivesheet()->toArray();
+      return new JsonResponse($excel_file);
+    }
 }
