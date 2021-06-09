@@ -20,13 +20,13 @@ class Affectation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Lit::class, inversedBy="affectations")
+     * @ORM\ManyToOne(targetEntity=Lit::class, inversedBy="affectations", cascade={"persist"})
      * @Groups ({"all_student"})
      */
     private $lit;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
     private $annee;
 
@@ -37,7 +37,8 @@ class Affectation
     private $reservation;
 
     public function __construct(){
-        $this->annee = new DateTime;
+        $annee = new DateTime;
+        $this->annee = $annee->format('Y');
     }
 
     public function getId(): ?int
@@ -57,12 +58,12 @@ class Affectation
         return $this;
     }
 
-    public function getAnnee(): ?\DateTimeInterface
+    public function getAnnee(): string
     {
         return $this->annee;
     }
 
-    public function setAnnee(\DateTimeInterface $annee): self
+    public function setAnnee(string $annee): self
     {
         $this->annee = $annee;
 

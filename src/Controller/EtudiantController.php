@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Affectation;
+use DateTime;
 use App\Entity\Etudiant;
 use App\Entity\Reservation;
 use App\Repository\LitRepository;
@@ -10,7 +11,9 @@ use App\Repository\EtudiantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -54,19 +57,25 @@ class EtudiantController extends AbstractController
            		$reader= IOFactory::createReader($file);
            		$spreadsheet=$reader->load($doc);
            		$excel_file= $spreadsheet->getActivesheet()->toArray();
-
-      	    //dd($excel_file);
+      	   // dd($excel_file);
       	   for ($i = 1; $i < count($excel_file); $i++ ){
+
                if (($etudiant = $this->etuRepo->findOneByNumero($excel_file[$i][0])) && ($lit = $this->litRep->findOneByNumero($excel_file[$i][4]))){
                    $reservation = $etudiant->getReservation();
-                       dd($reservation);
+                   foreach ($reservation as $rest){
+                       if ($rest->getAnnee()== '2021'){
+                           $affection = new Affectation();
+                           $affection->setReservation($rest);
+                           $affection->setLit($lit);
+                           dd($affection);
+                       }
+                   }
+
 
                }
 
-
-
            }
-      // return new JsonResponse($excel_file, Response::HTTP_OK);
+       return new JsonResponse('l\'opération est traitée avec succes', Response::HTTP_OK);
 
           }
 

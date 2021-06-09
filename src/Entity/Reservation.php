@@ -49,7 +49,7 @@ class Reservation
     protected $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      * @Assert\NotBlank( message="l'année est obligatoire" )
      * @Groups ({"all_student"})
      */
@@ -70,7 +70,8 @@ class Reservation
     private $affectation;
 
     public function __construct(){
-        $this->annee = new DateTime;
+        $annee = new DateTime;
+        $this->annee = $annee->format('Y');
     }
 
     public function getId(): ?int
@@ -78,12 +79,12 @@ class Reservation
         return $this->id;
     }
 
-    public function getAnnee(): ?\DateTimeInterface
+    public function getAnnee(): string
     {
         return $this->annee;
     }
 
-    public function setAnnee(\DateTimeInterface $annee): self
+    public function setAnnee(string $annee): self
     {
         $this->annee = $annee;
 
