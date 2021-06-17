@@ -4,13 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EtudiantApiRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @UniqueEntity({"numero","numIdentite"})
  * @ApiResource(
+ * attributes={
+ *          "order"={"moyenne"="DESC"},
+ *          "pagination_items_per_page"=5,
+ *          "pagination_client_enabled"=true,
+ *          "pagination_client_items_per_page"=true
+ *      },
  *      collectionOperations={
  *          "post"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
@@ -19,11 +27,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          },
  *          "get"={
  *              "security"="is_granted('ROLE_ETUDIANT')",
- *              "security_message"="Permission denied.", *              
+ *              "security_message"="Permission denied.",               
  *          },
  *      },
  *      itemOperations={"get"}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"id":"exact", "niveauFormation":"exact", "username":"exact","reservation.affectation":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantApiRepository::class)
  */
 class EtudiantApi
