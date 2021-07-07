@@ -63,13 +63,13 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups ({"all_student"})
-     * @Groups ({"archiver"})
+     * @Groups ({"archiver", "reservation_etu"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant", "reservation_etu"})
      * @Groups ({"archiver"})
      */
     private $username;
@@ -89,14 +89,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant", "reservation_etu"})
      * @Groups ({"archiver"})
      */
     private $prenoms;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant", "reservation_etu"})
      * @Groups ({"archiver"})
      */
     private $nom;

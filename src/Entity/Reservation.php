@@ -15,6 +15,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * * @ApiResource(
  *      attributes={
  *          "denormalization_context"={"groups"={"reservation_create"},"enable_max_depth"=true},
+ *          "pagination_items_per_page"=5,
+ *          "pagination_client_enabled"=true,
+ *          "pagination_client_items_per_page"=true
  *      },
  *      collectionOperations={
  *          "post"={
@@ -25,8 +28,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "get"={
  *              "security"="is_granted('ROLE_ADMIN')",
  *              "security_message"="Permission denied.",
- *              "path"="api/reservation/etudiant",
+ *              "path"="/reservation/etudiant",
  *              "normalization_context"={"groups"={"reservation_read"},"enable_max_depth"=true},
+ *          },
+ *          "getreservations"={
+ *              "method" ="GET",
+ *              "security"="is_granted('ROLE_ETUDIANT')",
+ *              "security_message"="Permission denied.",
+ *              "path"="/reservations",
+ *              "normalization_context"={"groups"={"reservation_etu"},"enable_max_depth"=true},
  *          }
  *      },
  *      itemOperations={
@@ -35,7 +45,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          }
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "etudiant.id":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "etudiant.niveau.nom":"exact", "affectation.annee":"exact"})
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
 class Reservation
@@ -44,14 +54,14 @@ class Reservation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_etu"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank( message="l'année est obligatoire" )
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_etu"})
      */
     private $annee;
 
@@ -59,12 +69,12 @@ class Reservation
      * @ORM\ManyToOne(targetEntity=Etudiant::class, inversedBy="reservation")
      * @Assert\NotBlank( message="l'étudiant est obligatoire" )
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"reservation_create", "reservation_read"})
+     * @Groups({"reservation_create", "reservation_read", "reservation_etu"})
      */
     private $etudiant;
 
     /**
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_etu"})
      * @ORM\OneToOne(targetEntity=Affectation::class, mappedBy="reservation", cascade={"persist", "remove"})
      */
     private $affectation;

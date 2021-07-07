@@ -16,12 +16,13 @@ class Affectation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"reservation_etu"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Lit::class, inversedBy="affectations", cascade={"persist"})
-     * @Groups ({"all_student"})
+     * @Groups ({"all_student", "reservation_etu"})
      */
     private $lit;
 

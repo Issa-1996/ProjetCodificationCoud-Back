@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          },
  *         "list_reservation"={
  *               "method"="get",
- *                "path"="/admin/etudiant/listReservation",
+ *                "path"="/etudiant/reservations",
  *                "security"="is_granted('ROLE_ADMIN')",
  *                "security_message"="Permission denied.",
  *                "normalization_context"={"groups"={"all_etudiant"},"enable_max_depth"=true}
@@ -37,13 +37,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",
  *              "path"="/etudiant/liste",
- *          },
- *          "reservations"={
- *              "method"="get",
- *              "security"="is_granted('ROLE_ADMIN')",
- *              "security_message"="Permission non autorisée.",
- *              "path"="/etudiant/reservations",
- *              "normalization_context"={"groups"={"all_student"},"enable_max_depth"=true}
  *          }
  *      },
  *      itemOperations={
@@ -103,7 +96,7 @@ class Etudiant extends User
 
     /**
      * @ORM\Column(type="string")
-     * @Groups ({"all_student", "reservation_read", "all_etudiant"})
+     * @Groups ({"all_student", "reservation_read", "all_etudiant", "reservation_etu"})
      */
     private $moyenne;
 

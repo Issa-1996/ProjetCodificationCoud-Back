@@ -31,7 +31,7 @@ class Lit
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"all_student", "lit_read"})
+     * @Groups ({"all_student", "lit_read", "reservation_etu"})
      */
     private $numero;
 
