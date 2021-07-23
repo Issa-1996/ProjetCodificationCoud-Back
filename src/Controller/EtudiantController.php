@@ -74,7 +74,7 @@ class EtudiantController extends AbstractController
                            dd($affection);
                        }
                    }
-               }elseif (!$etudiant && !$lit) {
+                }elseif (!$etudiant && !$lit) {
                    $error = "message d erreur";
                    array_push($errors, $error);
                }
