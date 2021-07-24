@@ -6,6 +6,7 @@ use App\Entity\Affectation;
 use DateTime;
 use App\Repository\LitRepository;
 use App\Repository\EtudiantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,21 +23,17 @@ class EtudiantController extends AbstractController
 
     private $etuRepo;
     private $litRep;
-    private $validator;
-    private $serializer;
+    private $manager;
 
 
     public function  __construct(EtudiantRepository $etuRepo,
-                                 LitRepository $litRep,
-                                 ValidatorInterface $validator,
-                                 SerializerInterface $serializer
-    )
+                                 EntityManagerInterface $manager,
+                                 LitRepository $litRep )
 
     {
         $this->etuRepo = $etuRepo;
         $this->litRep = $litRep;
-        $this->validator = $validator;
-        $this->serializer = $serializer;
+        $this->manager = $manager;
     }
     /**
      * @Route(
@@ -54,16 +51,27 @@ class EtudiantController extends AbstractController
         $annee = new DateTime;
         $this->annee = $annee->format('Y');
 
-          $doc = $request ->files->get('excelFile');
+          $doc =$request ->files->get('excelFile');
            		$file= IOFactory::identify($doc);
            		$reader= IOFactory::createReader($file);
            		$spreadsheet=$reader->load($doc);
            		$excel_file= $spreadsheet->getActivesheet()->toArray();
       	   // dd($excel_file);
       	   for ($i = 1; $i < count($excel_file); $i++ ) {
+               $etudiant = $this->etuRepo->findOneByNumero($excel_file[$i][0]);
+               $lit = $this->litRep->findOneByNumero($excel_file[$i][4]);
 
-               if (($etudiant = $this->etuRepo->findOneByNumero($excel_file[$i][0])) &&
-                   ($lit = $this->litRep->findOneByNumero($excel_file[$i][4]))) {
+               if(!$etudiant){
+                //  return new Response('Etudiant(e) non reconnu(e).', Response::HTTP_FORBIDDEN);
+                  $error = "Ce numero carte n\' existe pas";
+                array_push($errors, $error);
+               }
+              if(!$lit){
+                 // return new Response('la colonne lit est  vide.', Response::HTTP_FORBIDDEN);
+              $error = "Ce lit est déja attribué";
+               array_push($errors, $error);
+               }
+               if ($etudiant && $lit) {
                   // dd($etudiant);
                    $reservation = $etudiant->getReservation();
                    foreach ($reservation as $rest) {
@@ -71,7 +79,10 @@ class EtudiantController extends AbstractController
                            $affection = new Affectation();
                            $affection->setReservation($rest);
                            $affection->setLit($lit);
-                           dd($affection);
+                        //  dd($affection);
+                           $this->manager->persist($affection);
+                           $this->manager->flush();
+
                        }
                    }
                }elseif (!$etudiant && !$lit) {
@@ -81,7 +92,7 @@ class EtudiantController extends AbstractController
              //  return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
 
            }
-      return new JsonResponse('l\'opération est traitée avec succes', Response::HTTP_OK);
+      return new JsonResponse('l\'opération est bien traitée avec succes', Response::HTTP_OK);
 
           }
 
