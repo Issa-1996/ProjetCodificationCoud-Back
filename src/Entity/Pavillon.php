@@ -55,7 +55,7 @@ class Pavillon
     private $campus;
 
     /**
-     * @ORM\OneToMany(targetEntity=Chambre::class, mappedBy="pavillon")
+     * @ORM\OneToMany(targetEntity=Chambre::class, mappedBy="pavillon", cascade={"persist"})
      * @Groups ({"pavillon"})
      */
     private $chambres;

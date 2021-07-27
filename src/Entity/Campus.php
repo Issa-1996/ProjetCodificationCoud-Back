@@ -48,7 +48,7 @@ class Campus
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Pavillon::class, mappedBy="campus")
+     * @ORM\OneToMany(targetEntity=Pavillon::class, mappedBy="campus", cascade={"persist"})
      */
     private $pavillons;
 

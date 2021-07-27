@@ -61,7 +61,7 @@ class Chambre
     private $pavillon;
 
     /**
-     * @ORM\OneToMany(targetEntity=Lit::class, mappedBy="chambre")
+     * @ORM\OneToMany(targetEntity=Lit::class, mappedBy="chambre",cascade={"persist"})
      * @Groups ({"chambre"})
      */
     private $lits;
