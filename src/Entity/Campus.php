@@ -44,11 +44,13 @@ class Campus
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ({"campus"})
+     * @Groups ({"all_student"})
      */
     private $nom;
 
     /**
      * @ORM\OneToMany(targetEntity=Pavillon::class, mappedBy="campus")
+     * @Groups ({"campus"})
      */
     private $pavillons;
 

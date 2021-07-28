@@ -44,6 +44,7 @@ class Chambre
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups ({"chambre"})
+     * @Groups ({"all_student"})
      */
     private $numero;
 
@@ -57,12 +58,14 @@ class Chambre
      * @ORM\ManyToOne(targetEntity=Pavillon::class, inversedBy="chambres", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups ({"chambre"})
+     * @Groups ({"all_student"})
      */
     private $pavillon;
 
     /**
      * @ORM\OneToMany(targetEntity=Lit::class, mappedBy="chambre")
      * @Groups ({"chambre"})
+     * @Groups ({"campus"})
      */
     private $lits;
 

@@ -14,7 +14,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiResource(
  *     attributes={
  *       "normalization_context"={"groups"={"lit_read"},"enable_max_depth"=true},
- *     }
+ *     },
+ *      collectionOperations={
+ *          "post",
+ *         "get_faculte"={
+ *                 "method" ="GET",
+ *                 "path"="/lits",
+ *                 "security"="is_granted('ROLE_ADMIN')",
+ *                 "security_message"="Vous n'avez pas d'access",
+ *                 "normalization_context"={"groups"={"lit"},"enable_max_depth"=true},
+ *              },
+ *    },
  *
  * )
  * @ORM\Entity(repositoryClass=LitRepository::class)
@@ -39,6 +49,7 @@ class Lit
      * @ORM\ManyToOne(targetEntity=Chambre::class, inversedBy="lits", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *  @Groups ({"lit_read"})
+     * @Groups ({"all_student"})
      */
     private $chambre;
 

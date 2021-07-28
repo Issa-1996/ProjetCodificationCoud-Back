@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\Reservation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Reservation|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,5 +48,21 @@ class ReservationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneByStudentId($value): ?Reservation
+    {
+        $annee = new DateTime;
+        $this->annee = $annee->format('Y');
+
+        return $this->createQueryBuilder('r')
+            ->where('r.annee = :an')
+            ->setParameter('an', $this->annee)
+            ->join('r.etudiant', 'etu')
+            ->andWhere('etu.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
 }

@@ -2,21 +2,24 @@
 
 namespace App\Controller;
 
-use App\Entity\Affectation;
 use DateTime;
+use App\Entity\Affectation;
 use App\Repository\LitRepository;
+use App\Repository\NiveauRepository;
 use App\Repository\EtudiantRepository;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Repository\AffectationRepository;
+use App\Repository\ReservationRepository;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Request;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EtudiantController extends AbstractController
 {
@@ -28,12 +31,18 @@ class EtudiantController extends AbstractController
 
     public function  __construct(EtudiantRepository $etuRepo,
                                  EntityManagerInterface $manager,
-                                 LitRepository $litRep )
+                                 LitRepository $litRep,
+                                 ReservationRepository $reserRepo,
+                                 NiveauRepository $niveauRepo,
+                                 AffectationRepository $affectationRepo )
 
     {
         $this->etuRepo = $etuRepo;
         $this->litRep = $litRep;
         $this->manager = $manager;
+        $this->reservationRepo = $reserRepo;
+        $this->niveauRepository = $niveauRepo;
+        $this->affectationRepo = $affectationRepo;
     }
     /**
      * @Route(
@@ -45,56 +54,47 @@ class EtudiantController extends AbstractController
      * @throws Exception
      */
 
-    // importation fichier Excel
+    // importation fichier Excel de codification
     public function import(Request $request){
         $errors = [];
         $annee = new DateTime;
         $this->annee = $annee->format('Y');
 
-          $doc =$request ->files->get('excelFile');
-           		$file= IOFactory::identify($doc);
-           		$reader= IOFactory::createReader($file);
-           		$spreadsheet=$reader->load($doc);
-           		$excel_file= $spreadsheet->getActivesheet()->toArray();
-      	   // dd($excel_file);
-      	   for ($i = 1; $i < count($excel_file); $i++ ) {
-               $etudiant = $this->etuRepo->findOneByNumero($excel_file[$i][0]);
-               $lit = $this->litRep->findOneByNumero($excel_file[$i][4]);
+        $doc =$request ->files->get('excelFile');
+        $file= IOFactory::identify($doc);
+        $reader= IOFactory::createReader($file);
+        $spreadsheet=$reader->load($doc);
+        $excel_file= $spreadsheet->getActivesheet()->toArray();
+        $niveau  = explode( '__', $doc->getClientOriginalName())[0];
+        if(!$this->niveauRepository->findOneByNom($niveau)){
+            array_push($errors, "Le fichier choisi n'est pas reconnu par le système.");
+            return new JsonResponse($errors, Response::HTTP_OK);
+        };
+        for ($i = 1; $excel_file[$i][0]!=null; $i++ ) {
+            $etudiant = $this->etuRepo->findOneByNumero($excel_file[$i][0]);
+            $lit = $this->litRep->findOneByNumero($excel_file[$i][4]);
 
-               if(!$etudiant){
-                //  return new Response('Etudiant(e) non reconnu(e).', Response::HTTP_FORBIDDEN);
-                  $error = "Ce numero carte n\' existe pas";
-                array_push($errors, $error);
-               }
-              if(!$lit){
-                 // return new Response('la colonne lit est  vide.', Response::HTTP_FORBIDDEN);
-              $error = "Ce lit est déja attribué";
-               array_push($errors, $error);
-               }
-               if ($etudiant && $lit) {
-                  // dd($etudiant);
-                   $reservation = $etudiant->getReservation();
-                   foreach ($reservation as $rest) {
-                       if ($rest->getAnnee() == $annee) {
-                           $affection = new Affectation();
-                           $affection->setReservation($rest);
-                           $affection->setLit($lit);
-                        //  dd($affection);
-                           $this->manager->persist($affection);
-                           $this->manager->flush();
+            if(!$etudiant){
+                array_push($errors, "Le numero Etudiant: ".$excel_file[$i][0]." n'existe pas.");
+            }
+            if(!$lit){
+                array_push($errors, "Le numero de Lit: ".$excel_file[$i][4]." n'existe pas.");
+            }
+            if ($etudiant && $lit) {
+                $reservation = $this->reservationRepo->findOneByStudentId($etudiant->getId());
 
-                       }
-                   }
-                }elseif (!$etudiant && !$lit) {
-                   $error = "message d erreur";
-                   array_push($errors, $error);
-               }
-             //  return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
-
-           }
-      return new JsonResponse('l\'opération est bien traitée avec succes', Response::HTTP_OK);
-
-          }
-
-
+                if ($reservation) {
+                    $affectation = $this->affectationRepo->findOneByResId($reservation->getId());
+                    if ($affectation==null) {
+                        $affectation = new Affectation();
+                        $affectation->setReservation($reservation);
+                    }
+                    $affectation->setLit($lit);
+                    $this->manager->persist($affectation);
+                    $this->manager->flush();
+                }
+            }
+        }
+        return new JsonResponse($errors, Response::HTTP_OK);
+    }
 }

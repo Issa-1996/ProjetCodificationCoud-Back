@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\Affectation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Affectation|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +48,20 @@ class AffectationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneByResId($value): ?Affectation
+    {
+        $annee = new DateTime;
+        $this->annee = $annee->format('Y');
+
+        return $this->createQueryBuilder('a')
+            ->where('a.annee = :an')
+            ->setParameter('an', $this->annee)
+            ->join('a.reservation', 'reservation')
+            ->andWhere('reservation.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
