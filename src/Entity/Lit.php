@@ -16,7 +16,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *       "normalization_context"={"groups"={"lit_read"},"enable_max_depth"=true},
  *     },
  *      collectionOperations={
- *          "post",
  *         "get_faculte"={
  *                 "method" ="GET",
  *                 "path"="/lits",

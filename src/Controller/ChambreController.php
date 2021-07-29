@@ -108,7 +108,7 @@ class ChambreController extends AbstractController
                 $this->manager->flush();
             }
         }
-        return new JsonResponse($camp, Response::HTTP_OK);
+        return new JsonResponse("L'importation est terminée", Response::HTTP_OK);
     }
     /**
      * @Route(
