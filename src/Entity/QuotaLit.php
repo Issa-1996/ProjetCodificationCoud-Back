@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\QuotaLitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\QuotaLitRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=QuotaLitRepository::class)
@@ -20,7 +21,7 @@ class QuotaLit
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
     private $annee;
 
@@ -31,13 +32,15 @@ class QuotaLit
     private $niveau;
 
     /**
-     * @ORM\OneToMany(targetEntity=Lit::class, mappedBy="quota")
+     * @ORM\OneToMany(targetEntity=Lit::class, mappedBy="quota",cascade={"persist"})
      */
     private $lits;
 
     public function __construct()
     {
         $this->lits = new ArrayCollection();
+        $annee = new DateTime;
+        $this->annee = $annee->format('Y');
     }
 
     public function getId(): ?int

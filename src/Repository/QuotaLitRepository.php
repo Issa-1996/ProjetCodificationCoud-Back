@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\QuotaLit;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method QuotaLit|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +48,21 @@ class QuotaLitRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findOneByNiveauQuot($numLit, $nomNiv): ?QuotaLit
+    {
+        $annee = new DateTime;
+        $this->annee = $annee->format('Y');
+        return $this->createQueryBuilder('q')
+            ->join('q.lits', 'lit')
+            ->andWhere('lit.numero = :valLit')
+            ->setParameter('valLit', $numLit)
+            ->join('q.niveau', 'niveau')
+            ->andWhere('niveau.nom = :valNiv')
+            ->setParameter('valNiv', $nomNiv)
+            ->andWhere('q.annee = :annee')
+            ->setParameter('annee', $annee)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
