@@ -63,38 +63,20 @@ class ChambreController extends AbstractController
         $reader= IOFactory::createReader($file);
         $spreadsheet=$reader->load($doc);
         $excel_file= $spreadsheet->getActivesheet()->toArray();
-        for ($i = 1; $excel_file[$i][0]!=nniveauRepoull; $i++ ){
+        for ($i = 1; $excel_file[$i][0]!=null; $i++ ){
             $camp=$this->campusRepo->findOneByNom($excel_file[$i][4]);
-            //dd($excel_file[$i][3]);
             if ($camp!=null){
                 $pavillon=$camp->getPavillons();
-                //dd(explode('_',$excel_file[$i][3])[1]);
                 foreach($pavillon as $keyPav){
                     if($keyPav->getNom()==$excel_file[$i][1]){
-                        // foreach($keyPav->getChambres() as $chamb){
-                        //     if($chamb->getNumero()==$excel_file[$i][2]){
-                                //foreach($chamb->getLits() as $keyLi){
-                                    //if($keyLi->getNumero()==$excel_file[$i][3]){
-                                       // echo $i;
-                                        // $lits= new Lit();
-                                        // $lits->setNumero($excel_file[$i][3]);
-                                        // $chamb->addLit($lits);
-                                        // $this->manager->persist($camp);
-                                        // $this->manager->flush();
-                                    //}
-                                //}
-                            //}else{
-                                //echo $i;
-                                $lits= new Lit();
-                                $lits->setNumero($excel_file[$i][2].'('.$camp->getNom().')_'.explode('_',$excel_file[$i][3])[1]);
-                                $chambres=new Chambre();
-                                $chambres->setNumero($excel_file[$i][2]);
-                                $chambres->addLit($lits);
-                                $keyPav->addChambre($chambres);
-                                $this->manager->persist($camp);
-                                $this->manager->flush();
-                            //}
-                        //}
+                        $lits= new Lit();
+                        $lits->setNumero($excel_file[$i][2].'('.$camp->getNom().')_'.explode('_',$excel_file[$i][3])[1]);
+                        $chambres=new Chambre();
+                        $chambres->setNumero($excel_file[$i][2]);
+                        $chambres->addLit($lits);
+                        $keyPav->addChambre($chambres);
+                        $this->manager->persist($camp);
+                        $this->manager->flush();
                     }else{
                         $lits= new Lit();
                         $lits->setNumero($excel_file[$i][3]);
