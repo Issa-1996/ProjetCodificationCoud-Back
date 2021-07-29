@@ -5,11 +5,31 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuotaLitRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiResource(
+ *     attributes={
+ *       "normalization_context"={"groups"={"quota_read"},"enable_max_depth"=true},
+ *     },
+ *      collectionOperations={
+ *         "get_faculte"={
+ *                 "method" ="GET",
+ *                 "path"="/quotas",
+ *                 "security"="is_granted('ROLE_ETUDIANT')",
+ *                 "security_message"="Vous n'avez pas d'access",
+ *                 "normalization_context"={"groups"={"quota_read"},"enable_max_depth"=true},
+ *              },
+ *    },
+ *
+ * )
  * @ORM\Entity(repositoryClass=QuotaLitRepository::class)
+ * @ApiFilter(SearchFilter::class, properties={"niveau.nom":"exact", "annee":"exact"})
  */
 class QuotaLit
 {
@@ -17,6 +37,7 @@ class QuotaLit
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"quota_read"})
      */
     private $id;
 

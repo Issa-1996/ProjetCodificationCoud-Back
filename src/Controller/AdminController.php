@@ -55,7 +55,7 @@ class AdminController extends AbstractController
         $password="password";                                                                                                                               
        // dd($email);
         $message = (new \Swift_Message('Coordonnées de connexion '))
-                ->setFrom('yayefalldev@gmail.com')
+                ->setFrom('mailcoud@gmail.com')
                 ->setTo($email)
 
                 ->setBody("Bienvenue ".$tab["prenom"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veuiller l'utiliser pour vous connecter à l'espace administrateur.");
