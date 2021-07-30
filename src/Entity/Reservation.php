@@ -45,7 +45,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          }
  *      }
  * )
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "etudiant.niveau.nom":"exact", "affectation.annee":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "etudiant.niveau.nom":"exact", "affectation.annee":"exact", "annee":"exact", "etudiant.username":"exact"})
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
  */
 class Reservation

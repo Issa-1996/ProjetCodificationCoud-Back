@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EtudiantApiRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -29,10 +30,18 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "security"="is_granted('ROLE_ETUDIANT')",
  *              "security_message"="Permission denied.",               
  *          },
+ *         "get_rang"={
+ *               "method"="GET",
+ *                "path"="/etudiant_api/rang",
+ *                "security"="is_granted('ROLE_ETUDIANT')",
+ *                "security_message"="Permission denied.",
+ *                "normalization_context"={"groups"={"rang_etudiant"},"enable_max_depth"=true}
+ *
+ *          },
  *      },
  *      itemOperations={"get"}
  * )
- * @ApiFilter(SearchFilter::class, properties={"id":"exact", "niveauFormation":"exact", "username":"exact","reservation.affectation":"exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id":"exact", "niveauFormation":"exact", "numero":"exact"})
  * @ORM\Entity(repositoryClass=EtudiantApiRepository::class)
  */
 class EtudiantApi
@@ -87,6 +96,7 @@ class EtudiantApi
     /**
      * @ORM\Column(type="float", length=255)
      * @Assert\NotBlank()
+     * @Groups ({"rang_etudiant"})
      */
     private $moyenne;
 
