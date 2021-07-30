@@ -47,4 +47,16 @@ class PavillonRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findOneByCampus($campus, $pavillon): ?Pavillon
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.campus', 'c')
+            ->andWhere('c.nom = :campus')
+            ->setParameter('campus', $campus)
+            ->andWhere('p.nom = :pavillon')
+            ->setParameter('pavillon', $pavillon)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

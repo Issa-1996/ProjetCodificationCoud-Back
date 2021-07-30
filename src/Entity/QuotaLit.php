@@ -47,7 +47,7 @@ class QuotaLit
     private $annee;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="quotaLits")
+     * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="quotaLits",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $niveau;

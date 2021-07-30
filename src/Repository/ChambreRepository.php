@@ -47,4 +47,16 @@ class ChambreRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findOneByPavillon($pavillon, $chambre): ?Chambre
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.pavillon', 'p')
+            ->andWhere('p.nom = :pavillon')
+            ->setParameter('pavillon', $pavillon)
+            ->andWhere('c.numero = :chambre')
+            ->setParameter('chambre', $chambre)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

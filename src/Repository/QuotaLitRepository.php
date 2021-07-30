@@ -52,15 +52,16 @@ class QuotaLitRepository extends ServiceEntityRepository
     {
         $annee = new DateTime;
         $this->annee = $annee->format('Y');
+
         return $this->createQueryBuilder('q')
             ->join('q.lits', 'lit')
             ->andWhere('lit.numero = :valLit')
             ->setParameter('valLit', $numLit)
-            ->join('q.niveau', 'niveau')
-            ->andWhere('niveau.nom = :valNiv')
+            ->join('q.niveau', 'niv')
+            ->andWhere('niv.nom = :valNiv')
             ->setParameter('valNiv', $nomNiv)
-            ->andWhere('q.annee = :annee')
-            ->setParameter('annee', $annee)
+            ->andWhere('q.annee = :an')
+            ->setParameter('an', $this->annee)
             ->getQuery()
             ->getOneOrNullResult()
         ;

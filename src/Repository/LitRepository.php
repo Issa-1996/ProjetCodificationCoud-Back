@@ -57,4 +57,16 @@ class LitRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+    public function findOneByChambre($chambre, $lit): ?Lit
+    {
+        return $this->createQueryBuilder('l')
+            ->join('l.chambre', 'c')
+            ->andWhere('c.numero = :chambre')
+            ->setParameter('chambre', $chambre)
+            ->andWhere('l.numero = :lit')
+            ->setParameter('lit', $lit)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
