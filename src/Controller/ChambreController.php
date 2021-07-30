@@ -63,7 +63,7 @@ class ChambreController extends AbstractController
         $reader= IOFactory::createReader($file);
         $spreadsheet=$reader->load($doc);
         $excel_file= $spreadsheet->getActivesheet()->toArray();
-        for ($i = 1; $excel_file[$i][0]!=nniveauRepoull; $i++ ){
+        for ($i = 1; $excel_file[$i][0]!=null; $i++ ){
             $camp=$this->campusRepo->findOneByNom($excel_file[$i][4]);
             if ($camp!=null){
                 $pavillon=$camp->getPavillons();
