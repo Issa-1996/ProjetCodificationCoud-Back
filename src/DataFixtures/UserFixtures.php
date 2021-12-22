@@ -16,6 +16,6 @@ class UserFixtures extends Fixture
         $superadmin->setRoles(["ROLE_ADMIN", "ROLE_SUPERADMIN"]);
 
         $manager->persist($superadmin);
-        $manager->flush();
+        // $manager->flush();
     }
 }
