@@ -15,7 +15,6 @@ class LogementFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager)
     {
     
-        
         // $manager->flush();
     }
 
