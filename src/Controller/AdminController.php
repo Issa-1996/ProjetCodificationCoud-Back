@@ -54,11 +54,11 @@ class AdminController extends AbstractController
         $email=$tab["username"];
         $password="password";                                                                                                                               
        // dd($email);
-        $message = (new \Swift_Message('Coordonnées de connexion '))
+        $message = (new \Swift_Message('Création de compte - COUD'))
                 ->setFrom('mailcoud@gmail.com')
                 ->setTo($email)
 
-                ->setBody("Bienvenue ".$tab["prenom"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veuiller l'utiliser pour vous connecter à l'espace administrateur.");
+                ->setBody("Bienvenue ".$tab["prenoms"]." ".$tab["nom"]." dans l'espace Administrateur de la gestion des codifications du COUD.\n Vos informations de connexion sont:\n \n email: ".$email."\n password: ".$password."\n \n Veuiller l'utiliser pour vous connecter. Veillez changer votre mot de passe une fois connecté.\n \n Cordialement,\n L'équipe COUD");
                 //dd($message);
             $mailer->send($message);
             //return $this->render('base.html.twig');
